@@ -58,8 +58,8 @@ bindOptional f (Full a) = f a
   Optional a
   -> a
   -> a
-(??) =
-  error "todo: Course.Optional#(??)"
+Full a ?? _ = a
+Empty ?? a = a
 
 -- | Try the first optional for a value. If it has a value, use it; otherwise,
 -- use the second value.
@@ -79,8 +79,10 @@ bindOptional f (Full a) = f a
   Optional a
   -> Optional a
   -> Optional a
-(<+>) =
-  error "todo: Course.Optional#(<+>)"  
+-- Empty <+> Empty = Empty
+-- Empty <+> Full a = Full a
+Empty <+> x = x
+Full a <+> _ = Full a
 
 applyOptional :: Optional (a -> b) -> Optional a -> Optional b
 applyOptional f a = bindOptional (\f' -> mapOptional f' a) f

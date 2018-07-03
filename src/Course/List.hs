@@ -75,8 +75,10 @@ headOr ::
   a
   -> List a
   -> a
-headOr =
-  error "todo: Course.List#headOr"
+headOr a Nil = a
+headOr _ (h :. _) = h
+--- TODO: Tony's answer
+-- headOr = foldRight const
 
 -- | The product of the elements of a list.
 --
