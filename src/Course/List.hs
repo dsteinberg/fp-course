@@ -75,10 +75,16 @@ headOr ::
   a
   -> List a
   -> a
-headOr a Nil = a
-headOr _ (h :. _) = h
+-- headOr a Nil = a
+-- headOr _ (h :. _) = h
 --- TODO: Tony's answer
--- headOr = foldRight const
+headOr = foldRight const
+-- because
+-- >>> foldr const 3 (1 :. 2:. Nil)
+-- >>> const 1 foldr const 3 (2 :. Nil)
+-- 1
+-- >>> foldr const 3 Nil
+-- >>> 3
 
 -- | The product of the elements of a list.
 --
@@ -93,8 +99,7 @@ headOr _ (h :. _) = h
 product ::
   List Int
   -> Int
-product =
-  error "todo: Course.List#product"
+product = foldRight (*) 1
 
 -- | Sum the elements of the list.
 --
@@ -108,8 +113,7 @@ product =
 sum ::
   List Int
   -> Int
-sum =
-  error "todo: Course.List#sum"
+sum = foldRight (+) 0
 
 -- | Return the length of the list.
 --
@@ -120,8 +124,8 @@ sum =
 length ::
   List a
   -> Int
-length =
-  error "todo: Course.List#length"
+-- length l = sum (foldRight (\_ y -> (1 :. y)) Nil l)
+length = foldRight (\_ y -> 1 + y) 0
 
 -- | Map the given function on each element of the list.
 --
@@ -135,8 +139,8 @@ map ::
   (a -> b)
   -> List a
   -> List b
-map =
-  error "todo: Course.List#map"
+-- map f a = foldRight (\h t -> f h :. t) Nil a
+map f = foldRight (\h t -> f h :. t) Nil
 
 -- | Return elements satisfying the given predicate.
 --
@@ -152,8 +156,8 @@ filter ::
   (a -> Bool)
   -> List a
   -> List a
-filter =
-  error "todo: Course.List#filter"
+-- filter f a = foldRight (\h t -> if f h then h :. t else t) Nil a
+filter f = foldRight (\h -> if f h then (h:.) else id) Nil
 
 -- | Append two lists to a new list.
 --
@@ -171,8 +175,8 @@ filter =
   List a
   -> List a
   -> List a
-(++) =
-  error "todo: Course.List#(++)"
+(a :. Nil) ++ (b :. Nil) = (a :. b :. Nil) 
+  -- error "todo: Course.List#(++)"
 
 infixr 5 ++
 
