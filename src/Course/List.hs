@@ -77,7 +77,6 @@ headOr ::
   -> a
 -- headOr a Nil = a
 -- headOr _ (h :. _) = h
---- TODO: Tony's answer
 headOr = foldRight const
 -- because
 -- >>> foldr const 3 (1 :. 2:. Nil)
@@ -268,9 +267,10 @@ find ::
   (a -> Bool)
   -> List a
   -> Optional a
-find f a = foldRight (\h t -> if f h then Full h else t) Empty a
--- filter f = foldRight (\h -> if f h then (h:.) else id) Nil
-
+-- find f a = foldRight (\h t -> if f h then Full h else t) Empty a
+find f a = case filter f a of
+    Nil -> Empty
+    (h :. _) -> Full h
 
 -- | Determine if the length of the given list is greater than 4.
 --
@@ -288,8 +288,9 @@ find f a = foldRight (\h t -> if f h then Full h else t) Empty a
 lengthGT4 ::
   List a
   -> Bool
-lengthGT4 =
-  error "todo: Course.List#lengthGT4"
+lengthGT4 (_ :. _ :. _ :. _ :. _ :. _) = True
+lengthGT4 _ = False
+
 
 -- | Reverse a list.
 --
@@ -305,8 +306,8 @@ lengthGT4 =
 reverse ::
   List a
   -> List a
-reverse =
-  error "todo: Course.List#reverse"
+reverse = foldLeft (flip (:.)) Nil
+-- reverse a = a
 
 -- | Produce an infinite `List` that seeds with the given value at its head,
 -- then runs the given function for subsequent elements
