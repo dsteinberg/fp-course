@@ -96,8 +96,9 @@ instance Functor ((->) t) where
   a
   -> f b
   -> f a
+-- eg. map (const a) List b => List a
+-- a <$ fb = (<$>) (const a) fb
 (<$) = (<$>) . const
--- a <$ fb = (<$>) (const a fb)
 
 -- | Anonymous map producing unit value.
 --
@@ -116,8 +117,7 @@ void ::
   Functor f =>
   f a
   -> f ()
-void =
-  error "todo: Course.Functor#void"
+void a = () <$ a
 
 -----------------------
 -- SUPPORT LIBRARIES --
