@@ -269,8 +269,8 @@ lift1 = (<$>)
   f a
   -> f b
   -> f b
-(*>) =
-  error "todo: Course.Applicative#(*>)"
+-- fa *> fb = lift2 (flip const) fa fb
+(*>)= lift2 (flip const)
 
 -- | Apply, discarding the value of the second argument.
 -- Pronounced, left apply.
@@ -295,8 +295,7 @@ lift1 = (<$>)
   f b
   -> f a
   -> f b
-(<*) =
-  error "todo: Course.Applicative#(<*)"
+(<*) = lift2 const
 
 -- | Sequences a list of structures to a structure of list.
 --
@@ -318,8 +317,7 @@ sequence ::
   Applicative f =>
   List (f a)
   -> f (List a)
-sequence =
-  error "todo: Course.Applicative#sequence"
+sequence l = (foldRight . lift2) (:.) (pure Nil) l
 
 -- | Replicate an effect a given number of times.
 --
