@@ -340,8 +340,11 @@ replicateA ::
   Int
   -> f a
   -> f (List a)
-replicateA =
-  error "todo: Course.Applicative#replicateA"
+replicateA times fa =
+    lift2 (:.) fa fla
+        where fla = if times > 1 then replicateA (times - 1) fa else (pure Nil)
+-- TONY'S: sequence . replicate n
+-- where replicate is from List.hs
 
 -- | Filter a list with a predicate that produces an effect.
 --
